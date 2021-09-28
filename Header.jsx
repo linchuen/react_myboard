@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from './logo.svg';
 
 class Header extends Component {
     logobackground = {
@@ -39,7 +40,7 @@ class Header extends Component {
         <div className="container" >
             <div className="mb-auto">
                 <div style={this.logobackground}>
-                        <img src='logo.png' width='150px'></img>
+                    <a href='/'><img src={logo} width='150px'></img></a>
                 </div>
                 <div style={this.clock}>{this.state.today}</div>
             </div>

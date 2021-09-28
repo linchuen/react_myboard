@@ -55,11 +55,11 @@ class Upload extends Component {
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'text': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
+      body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
     })
     .then((response) => { return response.json() })
     .then((data) => {
-      if (data['id'] !== null) { alert(data['text'] + ' created at' + data['createAt'] + ' successfully') }
+      if (data['id'] !== null) { alert(data['filename'] + ' created at' + data['createAt'] + ' successfully') }
     })
     .catch((error) => { alert(error);console.log(error) })
   }

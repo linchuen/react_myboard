@@ -18,16 +18,13 @@ class Footer extends Component {
       fetch('/text', {
          method: 'GET'
       })
-         .then((response) => {
-            return response.json()
-         })
+         .then((response) => response.json())
          .then((itemlist) => {
-            console.log(typeof (itemlist), itemlist);
+            console.log('Marquee:',typeof (itemlist), itemlist);
             Object.values(itemlist).forEach(item => {
-               this.textlist.push(item.text + '     ');
+               this.textlist.push(item.filename + '     ');
             });
             this.setState({ marquee: this.textlist });
-            console.log(this.textlist);
          })
          .catch((error) => {
             console.log(error);
