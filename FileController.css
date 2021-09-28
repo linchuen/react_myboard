@@ -1,0 +1,16 @@
+.font30 {
+    font-size: 30px;
+}
+
+.d-block {
+    display: block;
+}
+
+.bg-w {
+    background: white;
+}
+
+.eventbtn:active{
+    vertical-align: top;
+    padding: 8px 5px 0px;
+}
