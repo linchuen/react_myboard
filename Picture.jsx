@@ -19,10 +19,14 @@ class Picture extends Component {
             console.log('Picture:',typeof (data), data);
             Object.values(data).forEach(pic => {
                if (firsttime) {
-                  carousel.push(<div key={pic.id} className='carousel-item active'><img src={pic.filename} width='100%' height='820px'></img></div>);
-                  firsttime = false;
+                  if(this.props.compareDate(pic['startAt'],pic['expiredAt'])){
+                     carousel.push(<div key={pic.id} className='carousel-item active'><img src={pic.filename} width='100%' height='820px'></img></div>);
+                     firsttime = false;
+                  }
                } else {
-                  carousel.push(<div key={pic.id} className='carousel-item'><img src={pic.filename} width='100%' height='820px'></img></div>);
+                  if(this.props.compareDate(pic['startAt'],pic['expiredAt'])){
+                     carousel.push(<div key={pic.id} className='carousel-item'><img src={pic.filename} width='100%' height='820px'></img></div>);
+                  }
                }
             });
             this.setState({ carousel_items: carousel });

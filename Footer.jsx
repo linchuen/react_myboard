@@ -19,10 +19,12 @@ class Footer extends Component {
          method: 'GET'
       })
          .then((response) => response.json())
-         .then((itemlist) => {
-            console.log('Marquee:',typeof (itemlist), itemlist);
-            Object.values(itemlist).forEach(item => {
-               this.textlist.push(item.filename + '     ');
+         .then((data) => {
+            console.log('Marquee:',typeof (data), data);
+            Object.values(data).forEach(item => {
+               if(this.props.compareDate(item['startAt'],item['expiredAt'])){
+                  this.textlist.push(item.filename + '     ');
+               }
             });
             this.setState({ marquee: this.textlist });
          })

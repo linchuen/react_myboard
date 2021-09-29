@@ -64,7 +64,7 @@ class Upload extends Component {
     })
     .then((response) => { return response.json() })
     .then((data) => {
-      alert(data['filename'+' 建立於 '+date['createAt']])
+      alert(data['filename']+' 建立於 '+data['createAt'])
       console.log(data)
     })
     .catch((error) => { alert(error);console.log(error) })

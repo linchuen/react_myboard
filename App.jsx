@@ -9,6 +9,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {}
+    this.dateInRange=this.dateInRange.bind(this);
+  }
+
+  dateInRange(startAtstr,expiredAtstr){
+    const now=new Date()
+    const startAt=new Date(startAtstr)
+    const expiredAt=new Date(expiredAtstr)
+    if (now.getTime()>=startAt.getTime() && now.getTime()<=expiredAt.getTime()) {
+        return true
+    }
+    return false
   }
 
   render() {
@@ -17,13 +28,13 @@ class App extends Component {
         <Header ></Header>
         <div className='row' style={{ '--bs-gutter-x': 0, 'height': '820px' }}>
           <div className='col-8' >
-            <Video></Video>
+            <Video compareDate={this.dateInRange}></Video>
           </div>
           <div className='col-4' >
-            <Picture></Picture>
+            <Picture compareDate={this.dateInRange}></Picture>
           </div>
         </div>
-        <Footer></Footer>
+        <Footer compareDate={this.dateInRange}></Footer>
       </div>
     );
 

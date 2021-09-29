@@ -19,7 +19,9 @@ class Video extends Component {
          .then((data) => {
             console.log('Video:',typeof (data), data);
             Object.values(data).forEach(video => {
-               this.playlist.push(video.filename);
+               if(this.props.compareDate(video['startAt'],video['expiredAt'])){
+                  this.playlist.push(video.filename);
+               }
             });
             this.setState({ vidoesoource: data[0].filename });
             document.getElementById('myvideo').load();
