@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
+var classNames = require('classnames');
 
 class Item extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class Item extends Component {
             newFilename: this.props.filename,
             newStartAt: this.props.startAt,
             newExpiredAt: this.props.expiredAt,
-            enabled: this.props.enabled
+            enabled: this.props.enabled,
+            deleted:false
         })
         this.typeMap = new Map();
         this.typeMap.set('跑馬燈管理', 'text');
@@ -23,15 +25,15 @@ class Item extends Component {
         this.updateItem = this.updateItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
     }
-    updateItem(id) {
+    updateItem( id) {
         fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'filename': this.state.newFilename, 'startAt': this.state.newStartAt, 'expiredAt': this.state.newExpiredAt, 'enabled': this.state.enabled })
         })
-            .then(res => res.json)
+            .then(res => res.json())
             .then((data) => {
-                alert(data['id'] + ' update successfully');
+                alert(data['id']+'成功更新');
                 this.setState({
                     filename: this.state.newFilename,
                     startAt: this.state.newStartAt,
@@ -42,13 +44,14 @@ class Item extends Component {
             .catch(error => console.log(error))
     }
 
-    deleteItem(id) {
+    deleteItem( id) {
         fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
             method: 'DELETE',
         })
-            .then(res => res.json)
-            .then((data) => { alert(id + ' delete successfully') })
+            .then(res => res.json())
+            .then((data) => { alert(id + '成功刪除') })
             .catch(error => console.log(error))
+        this.setState({deleted:true})
     }
 
     timeFormat(DateObject) {
@@ -56,8 +59,9 @@ class Item extends Component {
     }
 
     render() {
+        let formClass = classNames({ 'needs-validation': true, 'd_none': this.state.deleted });
         return (
-            <form className="needs-validation" noValidate>
+            <form className={formClass} noValidate onSubmit={(e)=>{e.preventDefault();}}>
                 <div className="row g-3">
                     <div className="col-12">
                         <label className="form-label">ID:{this.state.id}</label>
@@ -103,14 +107,14 @@ class Item extends Component {
                     </div>
 
                     <div className="col-sm-2">
-                        <input type="checkbox" checked={this.state.enabled?'checked':''} onChange={(event) => { this.setState({ enabled: event.target.checked }) }}></input>
+                        <input type="checkbox" checked={this.state.enabled ? 'checked' : ''} onChange={(event) => { this.setState({ enabled: event.target.checked }) }}></input>
                         <label className="form-label">啟用</label>
                     </div>
                     <div className="col-sm-2 offset-sm-6">
-                        <button className="btn btn-primary btn-lg" onClick={() => this.updateItem(this.state.id)} >更新</button>
+                        <button className="btn btn-primary btn-lg" type="submit" onClick={() => this.updateItem(this.state.id)} >更新</button>
                     </div>
                     <div className="col-sm-2 ">
-                        <button className="btn btn-primary btn-lg" onClick={() => this.deleteItem(this.state.id)}>刪除</button>
+                        <button className="btn btn-primary btn-lg" type="submit" onClick={() => this.deleteItem(this.state.id)}>刪除</button>
                     </div>
                 </div>
             </form>
@@ -134,7 +138,7 @@ class UpdateAndDelete extends Component {
 
     componentDidMount() {
         const type = this.typeMap.get(this.props.type)
-        fetch('/' + type+'/all', { method: 'GET' })
+        fetch('/' + type + '/all', { method: 'GET' })
             .then((response) => { return response.json() })
             .then((data) => {
                 console.log(typeof (data), data);
@@ -152,7 +156,7 @@ class UpdateAndDelete extends Component {
         const type = this.typeMap.get(this.props.type)
         if (this.props.type !== this.state.type) {
             this.setState({ type: this.props.type })
-            fetch('/' + type+'/all', { method: 'GET' })
+            fetch('/' + type + '/all', { method: 'GET' })
                 .then((response) => { return response.json() })
                 .then((data) => {
                     console.log(typeof (data), data);

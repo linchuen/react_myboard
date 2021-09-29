@@ -6,6 +6,10 @@
     display: block;
 }
 
+.d_none{
+    display: none;
+}
+
 .bg-w {
     background: white;
 }

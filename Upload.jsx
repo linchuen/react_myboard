@@ -8,6 +8,7 @@ class Upload extends Component {
     super(props);
     const today = new Date();
     this.state = {
+      type: this.props.type,
       isVaild: false,
       text: '',
       video:null,
@@ -21,9 +22,14 @@ class Upload extends Component {
     this.handleVideo=this.handleVideo.bind(this);
     this.handlePicture=this.handlePicture.bind(this);
   }
+  componentDidUpdate(){
+    if (this.props.type !== this.state.type){
+      this.setState({type:this.props.type,text:''})
+    }
+  }
 
   renderInputType() {
-    switch (this.props.type) {
+    switch (this.state.type) {
       case '建立跑馬燈':
         return (
           <div className="input-group has-validation">
@@ -45,7 +51,6 @@ class Upload extends Component {
               onChange={(event) => { this.setState({ text: event.target.value,picture: event.target.files[0] }) }}></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>圖片內容不得為空</h6></div>
           </div>);
-
       default:
         break;
     }
@@ -59,7 +64,8 @@ class Upload extends Component {
     })
     .then((response) => { return response.json() })
     .then((data) => {
-      if (data['id'] !== null) { alert(data['filename'] + ' created at' + data['createAt'] + ' successfully') }
+      alert(data['filename'+' 建立於 '+date['createAt']])
+      console.log(data)
     })
     .catch((error) => { alert(error);console.log(error) })
   }
@@ -74,7 +80,8 @@ class Upload extends Component {
     })
     .then((response) => { return response.json() })
     .then((data) => {
-      if (data['id'] !== null) { alert(data['filename'] + ' created at' + data['createAt'] + ' successfully') }
+      alert(data['filename'+' 建立於 '+date['createAt']])
+      console.log(data)
     })
     .catch((error) => { alert(error);console.log(error) })
   }
@@ -89,7 +96,8 @@ class Upload extends Component {
     })
     .then((response) => { return response.json() })
     .then((data) => {
-      if (data['id'] !== null) { alert(data['filename'] + ' created at' + data['createAt'] + ' successfully') }
+      alert(data['filename'+' 建立於 '+date['createAt']])
+      console.log(data)
     })
     .catch((error) => { alert(error);console.log(error) })
   }
