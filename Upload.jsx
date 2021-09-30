@@ -11,20 +11,20 @@ class Upload extends Component {
       type: this.props.type,
       isVaild: false,
       text: '',
-      video:null,
-      picture:null,
+      video: null,
+      picture: null,
       startAt: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
       expiredAt: new Date(today.getFullYear(), today.getMonth(), today.getDate())
     }
     this.submitForm = this.submitForm.bind(this);
     this.renderInputType = this.renderInputType.bind(this);
-    this.handleText=this.handleText.bind(this);
-    this.handleVideo=this.handleVideo.bind(this);
-    this.handlePicture=this.handlePicture.bind(this);
+    this.handleText = this.handleText.bind(this);
+    this.handleVideo = this.handleVideo.bind(this);
+    this.handlePicture = this.handlePicture.bind(this);
   }
-  componentDidUpdate(){
-    if (this.props.type !== this.state.type){
-      this.setState({type:this.props.type,text:''})
+  componentDidUpdate() {
+    if (this.props.type !== this.state.type) {
+      this.setState({ type: this.props.type, text: '' })
     }
   }
 
@@ -41,14 +41,20 @@ class Upload extends Component {
         return (
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value,video: event.target.files[0] }) }}></input>
+              onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0] }) }}></input>
+            <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+            </div>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>影片內容不得為空</h6></div>
           </div>);
       case '上傳圖片':
         return (
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="image/png, image/jpeg, image/gif" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value,picture: event.target.files[0] }) }}></input>
+              onChange={(event) => { this.setState({ text: event.target.value, picture: event.target.files[0] }) }}></input>
+            <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+            </div>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>圖片內容不得為空</h6></div>
           </div>);
       default:
@@ -57,49 +63,53 @@ class Upload extends Component {
   }
   handleText() {
     fetch('/text',
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
-    })
-    .then((response) => { return response.json() })
-    .then((data) => {
-      alert(data['filename']+' 建立於 '+data['createAt'])
-      console.log(data)
-    })
-    .catch((error) => { alert(error);console.log(error) })
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
+      })
+      .then((response) => { return response.json() })
+      .then((data) => {
+        alert(data['filename'] + ' 建立於 ' + data['createAt'])
+        console.log(data)
+      })
+      .catch((error) => { alert(error); console.log(error) })
   }
 
   handleVideo() {
-    const fromdata=new FormData()
-    fromdata.append('video',this.state.video)
+    const fromdata = new FormData()
+    fromdata.append('video', this.state.video)
+    fromdata.append('startAt', this.state.startAt)
+    fromdata.append('expiredAt', this.state.expiredAt)
     fetch('/video',
-    {
-      method: 'POST',
-      body: fromdata
-    })
-    .then((response) => { return response.json() })
-    .then((data) => {
-      alert(data['filename'+' 建立於 '+date['createAt']])
-      console.log(data)
-    })
-    .catch((error) => { alert(error);console.log(error) })
+      {
+        method: 'POST',
+        body: fromdata
+      })
+      .then((response) => { return response.json() })
+      .then((data) => {
+        alert(data['filename'] + ' 建立')
+        console.log(data)
+      })
+      .catch((error) => { alert(error); console.log(error) })
   }
 
   handlePicture() {
-    const fromdata=new FormData()
-    fromdata.append('image',this.state.picture)
+    const fromdata = new FormData()
+    fromdata.append('image', this.state.picture)
+    fromdata.append('startAt', this.state.startAt)
+    fromdata.append('expiredAt', this.state.expiredAt)
     fetch('/picture',
-    {
-      method: 'POST',
-      body: fromdata
-    })
-    .then((response) => { return response.json() })
-    .then((data) => {
-      alert(data['filename'+' 建立於 '+date['createAt']])
-      console.log(data)
-    })
-    .catch((error) => { alert(error);console.log(error) })
+      {
+        method: 'POST',
+        body: fromdata
+      })
+      .then((response) => { return response.json() })
+      .then((data) => {
+        alert(data['filename'] + ' 建立')
+        console.log(data)
+      })
+      .catch((error) => { alert(error); console.log(error) })
   }
 
   submitForm(e) {

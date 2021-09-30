@@ -6,6 +6,15 @@
     display: block;
 }
 
+.d_inline{
+    display: inline;
+}
+
+.d_inlineblock{
+    display: inline-block;
+    padding: 5px;
+}
+
 .d_none{
     display: none;
 }
@@ -14,7 +23,29 @@
     background: white;
 }
 
+.left-50{
+    position: relative;
+    left: 50%;
+}
+
+
 .eventbtn:active{
     vertical-align: top;
     padding: 8px 5px 0px;
+}
+
+.accordion-item {
+    background-color: #212529;
+    color: white;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.accordion-button{
+    background-color:gray;
+    color: white;
+}
+
+.accordion-button:not(.collapsed) {
+    color: black;
+    background-color: white;
 }

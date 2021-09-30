@@ -17,14 +17,14 @@ class Header extends Component {
       super(props);
       const today=new Date();
       this.state={
-          today: today.getFullYear()+'年'+(today.getMonth()+1)+'月'+today.getDate()+'日 '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds()
+          today: today.toLocaleString()
       }
       this.tick=this.tick.bind(this);
    }
     tick(){
         const today=new Date();
         this.setState({
-            today: today.getFullYear()+'年'+(today.getMonth()+1)+'月'+today.getDate()+'日 '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds()
+            today: today.toLocaleString()
         });
     }
 
