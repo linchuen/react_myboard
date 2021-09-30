@@ -23,7 +23,7 @@ class Footer extends Component {
             console.log('Marquee:',typeof (data), data);
             Object.values(data).forEach(item => {
                if(this.props.compareDate(item['startAt'],item['expiredAt'])){
-                  this.textlist.push(item.filename + '     ');
+                  this.textlist.push(<div className="m-r30 d_inlineblock">{item['filename']}</div>);
                }
             });
             this.setState({ marquee: this.textlist });
