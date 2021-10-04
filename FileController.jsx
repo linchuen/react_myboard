@@ -11,6 +11,7 @@ class FileController extends Component {
     this.state = {
       event: '建立跑馬燈'
     }
+    this.bodyheight=screen.height-125
     this.handleClickEvent = this.handleClickEvent.bind(this);
     this.renderClickItem = this.renderClickItem.bind(this);
   }
@@ -33,9 +34,9 @@ class FileController extends Component {
 
   render() {
     return (
-      <div className="FileController container">
+      <div className="container">
         <Header></Header>
-        <div className="row g-5">
+        <div className="row g-5" style={{'height':this.bodyheight}}>
           <div className="col-md-5 col-lg-4 order-md-last">
             <ControllList handleClick={this.handleClickEvent}></ControllList>
           </div>

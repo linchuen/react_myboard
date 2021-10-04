@@ -56,7 +56,7 @@ class Item extends Component {
     }
 
     timeFormat(DateObject) {
-        return DateObject.getFullYear() + '/' + DateObject.getMonth() + '/' + DateObject.getDate() + ' ' + DateObject.getHours() + ':' + DateObject.getMinutes() + ':' + DateObject.getSeconds()
+        return DateObject.getFullYear() + '/' + (DateObject.getMonth()+1) + '/' + DateObject.getDate() + ' ' + DateObject.getHours() + ':' + DateObject.getMinutes() + ':' + DateObject.getSeconds()
     }
 
     render() {

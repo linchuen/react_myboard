@@ -42,7 +42,7 @@ class Video extends Component {
 
    render() {
       return (
-         <video id="myvideo" className='center' autoPlay muted width='100%' onEnded={this.handleOnended}>
+         <video id="myvideo" className='center' autoPlay muted width='95%' onEnded={this.handleOnended}>
             <source src={this.state.vidoesoource} type="video/mp4"></source>
             <source src={this.state.vidoesoource} type="video/webm"></source>
             <source src={this.state.vidoesoource} type="video/ogg"></source>

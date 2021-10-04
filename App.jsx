@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {}
-    this.bodyheight=screen.height-125-85
+    this.bodyheight=screen.height-125-91
     this.dateInRange=this.dateInRange.bind(this);
   }
   
@@ -29,11 +29,11 @@ class App extends Component {
       <div className="App">
         <Header ></Header>
         <div className='row' style={{ '--bs-gutter-x': 0, 'height': this.bodyheight}}>
-          <div className='col-8 col-md-9 pos-r' >
+          <div className='col-8 col-md-8 pos-r' >
             <Video compareDate={this.dateInRange}></Video>
           </div>
-          <div className='col-4 col-md-3' >
-            <Picture compareDate={this.dateInRange}></Picture>
+          <div className='col-4 col-md-4' >
+            <Picture compareDate={this.dateInRange} height={this.bodyheight}></Picture>
           </div>
         </div>
         <Footer compareDate={this.dateInRange}></Footer>

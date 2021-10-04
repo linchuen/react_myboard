@@ -20,12 +20,12 @@ class Picture extends Component {
             Object.values(data).forEach(pic => {
                if (firsttime) {
                   if(this.props.compareDate(pic['startAt'],pic['expiredAt'])){
-                     carousel.push(<div key={pic.id} className='carousel-item active'><img src={pic.filename} width='100%' height='820px'></img></div>);
+                     carousel.push(<div key={pic.id} className='carousel-item active'><img src={pic.filename} width='100%' style={{'height': this.props.height-20,'padding':'10px'}}></img></div>);
                      firsttime = false;
                   }
                } else {
                   if(this.props.compareDate(pic['startAt'],pic['expiredAt'])){
-                     carousel.push(<div key={pic.id} className='carousel-item'><img src={pic.filename} width='100%' height='820px'></img></div>);
+                     carousel.push(<div key={pic.id} className='carousel-item'><img src={pic.filename} width='100%' style={{'height': this.props.height-20,'padding':'10px'}}></img></div>);
                   }
                }
             });
