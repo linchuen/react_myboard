@@ -42,9 +42,6 @@ class Upload extends Component {
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.text}
               onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0] }) }}></input>
-            <div class="input-group-append">
-              <span class="input-group-text">.00</span>
-            </div>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>影片內容不得為空</h6></div>
           </div>);
       case '上傳圖片':
@@ -52,9 +49,6 @@ class Upload extends Component {
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="image/png, image/jpeg, image/gif" value={this.state.text}
               onChange={(event) => { this.setState({ text: event.target.value, picture: event.target.files[0] }) }}></input>
-            <div class="input-group-append">
-              <span class="input-group-text">.00</span>
-            </div>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>圖片內容不得為空</h6></div>
           </div>);
       default:
