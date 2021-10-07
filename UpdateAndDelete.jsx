@@ -3,7 +3,7 @@ import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
 import { Accordion } from 'react-bootstrap';
-import { validEmail, validFilename } from './regex.js';
+import { validFilename } from './regex.js';
 
 class Item extends Component {
     constructor(props) {
@@ -103,13 +103,12 @@ class Item extends Component {
                                     <div className="input-group has-validation">
                                         <input type="text" className="form-control" value={this.state.newFilename}
                                             onChange={(event) => {
-                                                if (validFilename.test(this.state.filename)) {
-                                                    this.setState({ newFilename: event.target.value, isVaild: true })
+                                                if (validFilename.test(event.target.value)) {
+                                                    this.setState({ newFilename: event.target.value, isVaild: true });console.log(this.state.isVaild)
                                                 }else{
                                                     this.setState({ newFilename: event.target.value, isVaild: false })
                                                 }
-                                            }} required maxLength='100' pattern='\S+'></input>
-                                        <div id='invaildupdate' className="invalid-feedback" style={this.isVaild?{display:'block'}:{display:'none'}}><h6>字串內容不得為空</h6></div>
+                                            }} required maxLength='100' pattern='[^\.\s]+'></input>
                                     </div>
                                 </div>
 

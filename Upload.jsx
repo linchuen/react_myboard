@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
+import { validFilename } from './regex.js';
 
 class Upload extends Component {
   constructor(props) {
@@ -34,14 +35,14 @@ class Upload extends Component {
         return (
           <div className="input-group has-validation">
             <input type="text" className="form-control" placeholder='跑馬燈內容' value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value }) }} required maxlength='100'></input>
+              onChange={(event) => { this.setState({ text: event.target.value }) }} required maxLength='100' pattern='[^\.\s]+'></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>跑馬燈內容不得為空</h6></div>
           </div>);
       case '上傳影片':
         return (
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0]}) }} required></input>
+              onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0] }) }} required></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>影片內容不得為空</h6></div>
           </div>);
       case '上傳圖片':
@@ -56,18 +57,20 @@ class Upload extends Component {
     }
   }
   handleText() {
-    fetch('/text',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
-      })
-      .then((response) => { return response.json() })
-      .then((data) => {
-        alert(data['filename'] + ' 建立於 ' + data['createAt'])
-        console.log(data)
-      })
-      .catch((error) => { alert(error); console.log(error) })
+    if (validFilename.test(this.state.text)) {
+      fetch('/text',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
+        })
+        .then((response) => { return response.json() })
+        .then((data) => {
+          alert(data['filename'] + ' 建立於 ' + data['createAt'])
+          console.log(data)
+        })
+        .catch((error) => { alert(error); console.log(error) })
+    }
   }
 
   handleVideo() {
