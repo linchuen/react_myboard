@@ -59,7 +59,7 @@ class Upload extends Component {
     fetch('/text',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' ,'Authorization': 'Bearer '+ window.localStorage.getItem('token')},
         body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
       })
       .then((response) => { return response.json() })
@@ -78,6 +78,7 @@ class Upload extends Component {
     fetch('/video',
       {
         method: 'POST',
+        headers:{'Authorization': 'Bearer '+ window.localStorage.getItem('token')},
         body: fromdata
       })
       .then((response) => { return response.json() })
@@ -96,6 +97,7 @@ class Upload extends Component {
     fetch('/picture',
       {
         method: 'POST',
+        headers:{'Authorization': 'Bearer '+ window.localStorage.getItem('token')},
         body: fromdata
       })
       .then((response) => { return response.json() })

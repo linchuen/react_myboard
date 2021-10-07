@@ -29,7 +29,7 @@ class Item extends Component {
     updateItem(id) {
         fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' ,'Authorization': 'Bearer '+ window.localStorage.getItem('token')},
             body: JSON.stringify({ 'filename': this.state.newFilename, 'startAt': this.state.newStartAt, 'expiredAt': this.state.newExpiredAt, 'enabled': this.state.enabled })
         })
             .then(res => res.json())
@@ -42,17 +42,18 @@ class Item extends Component {
                     enabled: this.state.enabled
                 })
             })
-            .catch(error => console.log(error))
+            .catch(error => {alert(error);console.log(error)})
     }
 
     deleteItem(id) {
         fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
             method: 'DELETE',
+            headers: {'Authorization': 'Bearer '+ window.localStorage.getItem('token')}
         })
             .then(res => res.json())
-            .then((data) => { alert(id + '成功刪除') })
-            .catch(error => console.log(error))
-        this.setState({ deleted: true })
+            .then((data) => { alert(id + '成功刪除');this.setState({ deleted: true }) })
+            .catch(error => {alert(error);console.log(error)})
+        
     }
 
     timeFormat(DateObject) {

@@ -42,7 +42,7 @@ class Header extends Component {
                 <div style={this.logobackground}>
                     <a href='/'><img src="./logo.png" width='150px'></img></a>
                 </div>
-                <div style={this.clock}>{this.state.today}</div>
+                <div style={this.clock} onClick={()=>window.location.replace('/manage')}>{this.state.today}</div>
             </div>
         </div>
     );

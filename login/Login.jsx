@@ -17,8 +17,7 @@ class Login extends Component {
             .then((data) => {
                 console.log(data['token'])
                 window.localStorage.setItem('token',data['token'])
-                window.location.replace('/manage')
-                setTimeout(() => {}, 1000);
+                window.location.replace('/')
             })
             .catch((error) => { alert(error); console.log(error) })
         e.preventDefault()
