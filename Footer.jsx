@@ -51,7 +51,7 @@ class Footer extends Component {
 
    render() {
       return (
-         <div>
+         <div  style={{maxHeight: '91px',overflow:'hidden'}}>
             <marquee scrollamount={this.state.scrollamount} scrolldelay={this.state.scrolldelay} style={this.marquee} direction='up'>
                <div id='mtext' className='d_inlineblock'>
                   {this.state.marquee}

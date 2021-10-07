@@ -34,21 +34,21 @@ class Upload extends Component {
         return (
           <div className="input-group has-validation">
             <input type="text" className="form-control" placeholder='跑馬燈內容' value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value }) }}></input>
+              onChange={(event) => { this.setState({ text: event.target.value }) }} required maxlength='100'></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>跑馬燈內容不得為空</h6></div>
           </div>);
       case '上傳影片':
         return (
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0] }) }}></input>
+              onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0]}) }} required></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>影片內容不得為空</h6></div>
           </div>);
       case '上傳圖片':
         return (
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="image/png, image/jpeg, image/gif" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value, picture: event.target.files[0] }) }}></input>
+              onChange={(event) => { this.setState({ text: event.target.value, picture: event.target.files[0] }) }} required></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>圖片內容不得為空</h6></div>
           </div>);
       default:
@@ -107,7 +107,7 @@ class Upload extends Component {
   }
 
   submitForm(e) {
-    if (this.state.text === '') {
+    if (this.state.text.trim() === '') {
       document.getElementById('invaildresponse').style['display'] = 'block';
     } else {
       this.setState({ isVaild: true });

@@ -3,6 +3,7 @@ import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
 import { Accordion } from 'react-bootstrap';
+import { validEmail, validFilename } from './regex.js';
 
 class Item extends Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class Item extends Component {
             newStartAt: this.props.startAt,
             newExpiredAt: this.props.expiredAt,
             enabled: this.props.enabled,
-            deleted: false
+            deleted: false,
+            isVaild: true
         })
         this.typeMap = new Map();
         this.typeMap.set('跑馬燈管理', 'text');
@@ -27,22 +29,24 @@ class Item extends Component {
         this.deleteItem = this.deleteItem.bind(this);
     }
     updateItem(id) {
-        fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'filename': this.state.newFilename, 'startAt': this.state.newStartAt, 'expiredAt': this.state.newExpiredAt, 'enabled': this.state.enabled })
-        })
-            .then(res => res.json())
-            .then((data) => {
-                alert(data['id'] + '成功更新');
-                this.setState({
-                    filename: this.state.newFilename,
-                    startAt: this.state.newStartAt,
-                    expiredAt: this.state.newExpiredAt,
-                    enabled: this.state.enabled
-                })
+        if (this.state.isVaild) {
+            fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'filename': this.state.newFilename, 'startAt': this.state.newStartAt, 'expiredAt': this.state.newExpiredAt, 'enabled': this.state.enabled })
             })
-            .catch(error => console.log(error))
+                .then(res => res.json())
+                .then((data) => {
+                    alert(data['id'] + '成功更新');
+                    this.setState({
+                        filename: this.state.newFilename,
+                        startAt: this.state.newStartAt,
+                        expiredAt: this.state.newExpiredAt,
+                        enabled: this.state.enabled
+                    })
+                })
+                .catch(error => console.log(error))
+        }
     }
 
     deleteItem(id) {
@@ -56,13 +60,13 @@ class Item extends Component {
     }
 
     timeFormat(DateObject) {
-        return DateObject.getFullYear() + '/' + (DateObject.getMonth()+1) + '/' + DateObject.getDate() + ' ' + DateObject.getHours() + ':' + DateObject.getMinutes() + ':' + DateObject.getSeconds()
+        return DateObject.getFullYear() + '/' + (DateObject.getMonth() + 1) + '/' + DateObject.getDate() + ' ' + DateObject.getHours() + ':' + DateObject.getMinutes() + ':' + DateObject.getSeconds()
     }
 
     render() {
-        let formClass = classNames({ 'needs-validation': true, 'd_none': this.state.deleted });
+        let formClass = classNames({ 'needs-validation': true, 'd_none': this.state.deleted, 'was-validated': this.state.isVaild });
         return (
-            <form className={formClass} noValidate onSubmit={(e) => { e.preventDefault(); }}>
+            <form className={formClass} onSubmit={(e) => { e.preventDefault(); }}>
                 <div className="row g-3">
                     <Accordion>
                         <Accordion.Item eventKey="0">
@@ -94,34 +98,41 @@ class Item extends Component {
                                 </div>
                             </Accordion.Header>
                             <Accordion.Body>
-                                    <div className="col-12 d_inlineblock">
-                                        <label className="form-label">檔案名稱</label>
-                                        <div className="input-group has-validation">
-                                            <input type="text" className="form-control" value={this.state.newFilename} onChange={(event) => { this.setState({ newFilename: event.target.value }) }}></input>
-                                            <div className="invalid-feedback">Your username is required.</div>
-                                        </div>
+                                <div className="col-12 d_inlineblock">
+                                    <label className="form-label">檔案名稱</label>
+                                    <div className="input-group has-validation">
+                                        <input type="text" className="form-control" value={this.state.newFilename}
+                                            onChange={(event) => {
+                                                if (validFilename.test(this.state.filename)) {
+                                                    this.setState({ newFilename: event.target.value, isVaild: true })
+                                                }else{
+                                                    this.setState({ newFilename: event.target.value, isVaild: false })
+                                                }
+                                            }} required maxLength='100' pattern='\S+'></input>
+                                        <div id='invaildupdate' className="invalid-feedback" style={this.isVaild?{display:'block'}:{display:'none'}}><h6>字串內容不得為空</h6></div>
                                     </div>
+                                </div>
 
-                                    <div className="col-6 d_inlineblock">
-                                        <label className="form-label">開始時間</label>
-                                        <DateTimePicker className='bg-w' value={new Date(this.state.newStartAt)} onChange={(value) => { this.setState({ newStartAt: new Date(value) }) }} />
-                                    </div>
+                                <div className="col-6 d_inlineblock">
+                                    <label className="form-label">開始時間</label>
+                                    <DateTimePicker className='bg-w' value={new Date(this.state.newStartAt)} onChange={(value) => { this.setState({ newStartAt: new Date(value) }) }} />
+                                </div>
 
-                                    <div className="col-6 d_inlineblock">
-                                        <label className="form-label">結束時間</label>
-                                        <DateTimePicker className='bg-w' value={new Date(this.state.newExpiredAt)} onChange={(value) => { this.setState({ newExpiredAt: new Date(value) }) }} />
-                                    </div>
+                                <div className="col-6 d_inlineblock">
+                                    <label className="form-label">結束時間</label>
+                                    <DateTimePicker className='bg-w' value={new Date(this.state.newExpiredAt)} onChange={(value) => { this.setState({ newExpiredAt: new Date(value) }) }} />
+                                </div>
 
-                                    <div className="col-sm-2 d_inlineblock">
-                                        <input type="checkbox" checked={this.state.enabled ? 'checked' : ''} onChange={(event) => { this.setState({ enabled: event.target.checked }) }}></input>
-                                        <label className="form-label">啟用</label>
-                                    </div>
-                                    <div className="col-sm-2 offset-sm-6 d_inlineblock">
-                                        <button className="btn btn-primary btn-lg left-50" type="submit" onClick={() => this.updateItem(this.state.id)} >更新</button>
-                                    </div>
-                                    <div className="col-sm-2 d_inlineblock">
-                                        <button className="btn btn-primary btn-lg left-50" type="submit" onClick={() => this.deleteItem(this.state.id)}>刪除</button>
-                                    </div>
+                                <div className="col-sm-2 d_inlineblock">
+                                    <input type="checkbox" checked={this.state.enabled ? 'checked' : ''} onChange={(event) => { this.setState({ enabled: event.target.checked }) }}></input>
+                                    <label className="form-label">啟用</label>
+                                </div>
+                                <div className="col-sm-2 offset-sm-6 d_inlineblock">
+                                    <button className="btn btn-primary btn-lg left-50" type="submit" onClick={() => this.updateItem(this.state.id)} >更新</button>
+                                </div>
+                                <div className="col-sm-2 d_inlineblock">
+                                    <button className="btn btn-primary btn-lg left-50" type="submit" onClick={() => this.deleteItem(this.state.id)}>刪除</button>
+                                </div>
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>
