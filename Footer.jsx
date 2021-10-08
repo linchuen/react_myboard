@@ -24,7 +24,9 @@ class Footer extends Component {
    }
 
    componentDidMount() {
-      fetch('./text.json')
+      fetch('/text', {
+         method: 'GET'
+      })
          .then((response) => response.json())
          .then((data) => {
             console.log('Marquee:', typeof (data), data);

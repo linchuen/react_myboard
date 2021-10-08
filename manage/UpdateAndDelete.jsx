@@ -3,7 +3,7 @@ import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
 import { Accordion } from 'react-bootstrap';
-import { validFilename, validVideoType, validPicType } from './regex.js';
+import { validFilename, validVideoType, validPicType } from '../regex.js';
 
 class Item extends Component {
     constructor(props) {
@@ -29,7 +29,6 @@ class Item extends Component {
         this.deleteItem = this.deleteItem.bind(this);
     }
     updateItem(id) {
-        console.log(this.state.isVaild)
         if (this.state.isVaild) {
             fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
                 method: 'PUT',
@@ -55,8 +54,7 @@ class Item extends Component {
             method: 'DELETE',
             headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token') }
         })
-            .then(res => res.json())
-            .then((data) => { alert(id + '成功刪除'); this.setState({ deleted: true }) })
+            .then(() => { alert(id + '成功刪除'); this.setState({ deleted: true }) })
             .catch(error => { alert(error); console.log(error) })
 
     }

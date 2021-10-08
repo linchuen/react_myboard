@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
-import { validFilename, validVideoType, validPicType } from './regex.js';
+import { validFilename, validVideoType, validPicType } from '../regex.js';
 
 class Upload extends Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class Upload extends Component {
         return (
           <div className="input-group has-validation">
             <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.filetext}
-              onChange={(event) => { this.setState({ filetext: event.target.value, video: event.target.files }); console.log(event.target.files) }} required multiple></input>
+              onChange={(event) => { this.setState({ filetext: event.target.value, video: event.target.files }) }} required multiple></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>影片內容不得為空</h6></div>
           </div>);
       case '上傳圖片':
@@ -68,7 +68,7 @@ class Upload extends Component {
       fetch('/text',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.localStorage.getItem('token') },
           body: JSON.stringify({ 'filename': this.state.text, 'startAt': this.state.startAt, 'expiredAt': this.state.expiredAt })
         })
         .then((response) => { return response.json() })
@@ -89,6 +89,7 @@ class Upload extends Component {
       fetch('/video',
         {
           method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token') },
           body: fromdata
         })
         .then((response) => { return response.json() })
@@ -109,6 +110,7 @@ class Upload extends Component {
       fetch('/picture',
         {
           method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + window.localStorage.getItem('token') },
           body: fromdata
         })
         .then((response) => { return response.json() })
