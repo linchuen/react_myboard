@@ -7,19 +7,21 @@ import {
 } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import FileController from './FileController';
+import Auth from './manage/Auth';
+import Login from './login/Login';
 
-ReactDOM.render(
-  <Router>
-    <Switch>
-        <Route path='/manage'>
-          <FileController />
-        </Route>
-        
-        <Route path='/'>
-          <App />
-        </Route>
-      </Switch>
-  </Router>,
-  document.getElementById('root')
-);
+
+ReactDOM.render(<Router>
+  <Switch>
+    <Route path='/login'>
+      <Login />
+    </Route>
+    <Route path='/manage'>
+      <Auth />
+    </Route>
+
+    <Route path='/'>
+      <App />
+    </Route>
+  </Switch>
+</Router>,document.getElementById('root'));

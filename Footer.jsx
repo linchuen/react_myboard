@@ -24,9 +24,7 @@ class Footer extends Component {
    }
 
    componentDidMount() {
-      fetch('/text', {
-         method: 'GET'
-      })
+      fetch('./text.json')
          .then((response) => response.json())
          .then((data) => {
             console.log('Marquee:', typeof (data), data);
@@ -40,7 +38,7 @@ class Footer extends Component {
          .catch((error) => {
             console.log(error);
          })
-      this.needtime = (document.getElementById('mtext').offsetHeight*2) / this.state.scrollamount * this.state.scrolldelay
+      this.needtime = (document.getElementById('mtext').offsetHeight*2+20) / this.state.scrollamount * this.state.scrolldelay
       this.timeID = setInterval(this.changetext, this.needtime)
    }
 

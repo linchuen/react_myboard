@@ -1,5 +1,5 @@
 import './FileController.css';
-import Header from './Header';
+import Header from '../Header';
 import Upload from './Upload';
 import ControllList from './ControllList';
 import UpdateAndDelete from './UpdateAndDelete';
@@ -11,10 +11,11 @@ class FileController extends Component {
     this.state = {
       event: '建立跑馬燈'
     }
-    this.bodyheight=screen.height-125
+    this.bodyheight = screen.height - 125
     this.handleClickEvent = this.handleClickEvent.bind(this);
     this.renderClickItem = this.renderClickItem.bind(this);
   }
+
   handleClickEvent(event) {
     this.setState({ event: event })
     console.log(event);
@@ -35,17 +36,17 @@ class FileController extends Component {
   render() {
     return (
       <div className="container">
-        <Header></Header>
-        <div className="row g-5" style={{'height':this.bodyheight}}>
-          <div className="col-md-5 col-lg-4 order-md-last">
-            <ControllList handleClick={this.handleClickEvent}></ControllList>
-          </div>
-          <div className="col-md-7 col-lg-8">
-            <h4 className="mb-3">Myboard</h4>
-            {this.renderClickItem()}
+          <Header></Header>
+          <div className="row g-5" style={{ 'height': this.bodyheight }}>
+            <div className="col-md-5 col-lg-4 order-md-last">
+              <ControllList handleClick={this.handleClickEvent}></ControllList>
+            </div>
+            <div className="col-md-7 col-lg-8">
+              <h4 className="mb-3">Hi {this.props.username},Welcome to Myboard</h4>
+              {this.renderClickItem()}
+            </div>
           </div>
         </div>
-      </div>
     );
   }
 }
