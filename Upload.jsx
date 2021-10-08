@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
-import { validFilename } from './regex.js';
+import { validFilename, validVideoType, validPicType } from './regex.js';
 
 class Upload extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class Upload extends Component {
       type: this.props.type,
       isVaild: false,
       text: '',
+      filetext: '',
       video: null,
       picture: null,
       startAt: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
@@ -25,7 +26,7 @@ class Upload extends Component {
   }
   componentDidUpdate() {
     if (this.props.type !== this.state.type) {
-      this.setState({ type: this.props.type, text: '' })
+      this.setState({ type: this.props.type, text: '', filetext: '' })
     }
   }
 
@@ -35,21 +36,27 @@ class Upload extends Component {
         return (
           <div className="input-group has-validation">
             <input type="text" className="form-control" placeholder='跑馬燈內容' value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value }) }} required maxLength='100' pattern='[^\.\s]+'></input>
-            <div className='invalid-feedback font30' id='invaildresponse'><h6>跑馬燈內容不得為空</h6></div>
+              onChange={(event) => {
+                if (validFilename.test(event.target.value)) {
+                  this.setState({ text: event.target.value, isVaild: true })
+                } else {
+                  this.setState({ text: event.target.value, isVaild: false })
+                }
+              }} required maxLength='100' pattern='[^\s]+'></input>
+            <div className='invalid-feedback font30' id='invaildresponse'><h6>跑馬燈內容不得包含空白字元</h6></div>
           </div>);
       case '上傳影片':
         return (
           <div className="input-group has-validation">
-            <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value, video: event.target.files[0] }) }} required></input>
+            <input type="file" className="form-control" accept="video/mp4, video/webm, video/ogg" value={this.state.filetext}
+              onChange={(event) => { this.setState({ filetext: event.target.value, video: event.target.files }); console.log(event.target.files) }} required multiple></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>影片內容不得為空</h6></div>
           </div>);
       case '上傳圖片':
         return (
           <div className="input-group has-validation">
-            <input type="file" className="form-control" accept="image/png, image/jpeg, image/gif" value={this.state.text}
-              onChange={(event) => { this.setState({ text: event.target.value, picture: event.target.files[0] }) }} required></input>
+            <input type="file" className="form-control" accept="image/png, image/jpeg, image/gif" value={this.state.filetext}
+              onChange={(event) => { this.setState({ filetext: event.target.value, picture: event.target.files }) }} required multiple></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>圖片內容不得為空</h6></div>
           </div>);
       default:
@@ -74,65 +81,79 @@ class Upload extends Component {
   }
 
   handleVideo() {
-    const fromdata = new FormData()
-    fromdata.append('video', this.state.video)
-    fromdata.append('startAt', this.state.startAt)
-    fromdata.append('expiredAt', this.state.expiredAt)
-    fetch('/video',
-      {
-        method: 'POST',
-        body: fromdata
-      })
-      .then((response) => { return response.json() })
-      .then((data) => {
-        alert(data['filename'] + ' 建立')
-        console.log(data)
-      })
-      .catch((error) => { alert(error); console.log(error) })
+    for (const element of this.state.video) {
+      const fromdata = new FormData()
+      fromdata.append('video', element)
+      fromdata.append('startAt', this.state.startAt)
+      fromdata.append('expiredAt', this.state.expiredAt)
+      fetch('/video',
+        {
+          method: 'POST',
+          body: fromdata
+        })
+        .then((response) => { return response.json() })
+        .then((data) => {
+          alert(data['filename'] + ' 建立')
+          console.log(data)
+        })
+        .catch((error) => { alert(error); console.log(error) })
+    }
   }
 
   handlePicture() {
-    const fromdata = new FormData()
-    fromdata.append('image', this.state.picture)
-    fromdata.append('startAt', this.state.startAt)
-    fromdata.append('expiredAt', this.state.expiredAt)
-    fetch('/picture',
-      {
-        method: 'POST',
-        body: fromdata
-      })
-      .then((response) => { return response.json() })
-      .then((data) => {
-        alert(data['filename'] + ' 建立')
-        console.log(data)
-      })
-      .catch((error) => { alert(error); console.log(error) })
+    for (const element of this.state.picture) {
+      const fromdata = new FormData()
+      fromdata.append('image', element)
+      fromdata.append('startAt', this.state.startAt)
+      fromdata.append('expiredAt', this.state.expiredAt)
+      fetch('/picture',
+        {
+          method: 'POST',
+          body: fromdata
+        })
+        .then((response) => { return response.json() })
+        .then((data) => {
+          alert(data['filename'] + ' 建立')
+          console.log(data)
+        })
+        .catch((error) => { alert(error); console.log(error) })
+    }
   }
 
   submitForm(e) {
-    if (this.state.text.trim() === '') {
-      document.getElementById('invaildresponse').style['display'] = 'block';
-    } else {
-      this.setState({ isVaild: true });
-      document.getElementById('invaildresponse').style['display'] = 'none';
-      switch (this.props.type) {
-        case '建立跑馬燈':
+    switch (this.props.type) {
+      case '建立跑馬燈':
+        if (validFilename.test(this.state.text)) {
+          document.getElementById('invaildresponse').style['display'] = 'none';
           this.handleText()
-          break;
-        case '上傳影片':
+        } else {
+          document.getElementById('invaildresponse').style['display'] = 'block';
+        }
+        break;
+      case '上傳影片':
+        if (validVideoType.test(this.state.filetext)) {
+          document.getElementById('invaildresponse').style['display'] = 'none';
           this.handleVideo()
-          break;
-        case '上傳圖片':
+        } else {
+          document.getElementById('invaildresponse').style['display'] = 'block';
+        }
+        break;
+      case '上傳圖片':
+        if (validPicType.test(this.state.filetext)) {
+          document.getElementById('invaildresponse').style['display'] = 'none';
           this.handlePicture()
-          break;
-        default:
-          this.handleText()
-          break;
-      }
+        } else {
+          document.getElementById('invaildresponse').style['display'] = 'block';
+        }
+        break;
+      default:
+        break;
     }
     e.preventDefault();
     e.stopPropagation();
   }
+
+
 
   render() {
     let formClass = classNames({ 'needs-validation': true, 'was-validated': this.state.isVaild });

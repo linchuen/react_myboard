@@ -3,7 +3,7 @@ import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 var classNames = require('classnames');
 import { Accordion } from 'react-bootstrap';
-import { validFilename } from './regex.js';
+import { validFilename, validVideoType, validPicType } from './regex.js';
 
 class Item extends Component {
     constructor(props) {
@@ -29,6 +29,7 @@ class Item extends Component {
         this.deleteItem = this.deleteItem.bind(this);
     }
     updateItem(id) {
+        console.log(this.state.isVaild)
         if (this.state.isVaild) {
             fetch('/' + this.typeMap.get(this.props.type) + '/' + id, {
                 method: 'PUT',
@@ -103,12 +104,32 @@ class Item extends Component {
                                     <div className="input-group has-validation">
                                         <input type="text" className="form-control" value={this.state.newFilename}
                                             onChange={(event) => {
-                                                if (validFilename.test(event.target.value)) {
-                                                    this.setState({ newFilename: event.target.value, isVaild: true });console.log(this.state.isVaild)
-                                                }else{
-                                                    this.setState({ newFilename: event.target.value, isVaild: false })
+                                                switch (this.props.type) {
+                                                    case '跑馬燈管理':
+                                                        if (validFilename.test(event.target.value)) {
+                                                            this.setState({ newFilename: event.target.value, isVaild: true })
+                                                        } else {
+                                                            this.setState({ newFilename: event.target.value, isVaild: false })
+                                                        }
+                                                        break;
+                                                    case '影片管理':
+                                                        if (validVideoType.test(event.target.value)) {
+                                                            this.setState({ newFilename: event.target.value, isVaild: true })
+                                                        } else {
+                                                            this.setState({ newFilename: event.target.value, isVaild: false })
+                                                        }
+                                                        break;
+                                                    case '圖片管理':
+                                                        if (validPicType.test(event.target.value)) {
+                                                            this.setState({ newFilename: event.target.value, isVaild: true })
+                                                        } else {
+                                                            this.setState({ newFilename: event.target.value, isVaild: false })
+                                                        }
+                                                        break;
+                                                    default:
+                                                        break;
                                                 }
-                                            }} required maxLength='100' pattern='[^\.\s]+'></input>
+                                            }} required maxLength='100' pattern='\S+'></input>
                                     </div>
                                 </div>
 
