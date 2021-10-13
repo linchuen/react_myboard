@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {}
-    this.bodyheight=screen.height-125-91
+    this.bodyheight=screen.height-125-85
     this.dateInRange=this.dateInRange.bind(this);
   }
   

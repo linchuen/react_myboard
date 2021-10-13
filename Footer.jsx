@@ -32,7 +32,13 @@ class Footer extends Component {
             console.log('Marquee:', typeof (data), data);
             Object.values(data).forEach(item => {
                if (this.props.compareDate(item['startAt'], item['expiredAt'])) {
-                  this.textlist.push(item['filename']);
+                  const MaxWordLength=screen.width/50-1
+                  let wordlen= item['filename'].length
+                  for (let index = 0; MaxWordLength < wordlen-index; index+=MaxWordLength) {
+                     this.textlist.push(item['filename'].substr(index,MaxWordLength));
+                  }
+                  console.log( typeof (item['filename']), item['filename']);
+                  this.textlist.push(item['filename'].substr(wordlen-wordlen%MaxWordLength,wordlen));
                }
             });
             this.setState({ marquee: this.textlist[this.index]})
@@ -40,7 +46,7 @@ class Footer extends Component {
          .catch((error) => {
             console.log(error);
          })
-      this.needtime = (document.getElementById('mtext').offsetHeight*2+20) / this.state.scrollamount * this.state.scrolldelay
+      this.needtime = (document.getElementById('mtext').offsetHeight*2) / this.state.scrollamount * this.state.scrolldelay
       this.timeID = setInterval(this.changetext, this.needtime)
    }
 
@@ -51,7 +57,7 @@ class Footer extends Component {
 
    render() {
       return (
-         <div  style={{maxHeight: '91px',overflow:'hidden'}}>
+         <div  style={{maxHeight: '85px',overflow:'hidden'}}>
             <marquee scrollamount={this.state.scrollamount} scrolldelay={this.state.scrolldelay} style={this.marquee} direction='up'>
                <div id='mtext' className='d_inlineblock'>
                   {this.state.marquee}
