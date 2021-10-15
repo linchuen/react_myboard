@@ -42,7 +42,7 @@ class Upload extends Component {
                 } else {
                   this.setState({ text: event.target.value, isVaild: false })
                 }
-              }} required maxLength='100' pattern='[^\s]+'></input>
+              }} required maxLength='200' pattern='[^\s]+'></input>
             <div className='invalid-feedback font30' id='invaildresponse'><h6>跑馬燈內容不得包含空白字元</h6></div>
           </div>);
       case '上傳影片':
