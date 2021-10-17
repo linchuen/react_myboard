@@ -9,10 +9,14 @@ import './index.css';
 import App from './App';
 import Auth from './manage/Auth';
 import Login from './login/Login';
+import Signup from './login/Signup';
 
 
 ReactDOM.render(<Router>
   <Switch>
+    <Route path='/signup'>
+      <Signup />
+    </Route>
     <Route path='/login'>
       <Login />
     </Route>
@@ -24,4 +28,4 @@ ReactDOM.render(<Router>
       <App />
     </Route>
   </Switch>
-</Router>,document.getElementById('root'));
+</Router>, document.getElementById('root'));

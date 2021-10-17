@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './signin.css';
+import './login.css';
 import bootstraplogo from './bootstrap-logo.svg';
 
 class Login extends Component {
@@ -41,8 +41,7 @@ class Login extends Component {
 
                     <div className="checkbox mb-3">
                         <label>
-                            <input type="checkbox" value="remember-me"></input>
-                            <label className="form-label"> Remember me</label>
+                            <a href='/signup' className="form-label"> I wanna sign up!!</a>
                         </label>
                     </div>
                     <button className="w-100 btn btn-lg btn-primary" type="submit" >Sign in</button>
