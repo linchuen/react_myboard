@@ -15,7 +15,6 @@ class Signup extends Component {
     }
     handleSignup(e) {
         if(this.state.password===this.state.retypepassword){
-            console.log(this.state.password===this.state.retypepassword)
             fetch('/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: this.state.username,email: this.state.email, password: this.state.password }) })
             .then((res) => { return res.text() })
             .then((data) => {
@@ -24,7 +23,6 @@ class Signup extends Component {
             })
             .catch((error) => { alert(error); console.log(error) })
         }else{
-            console.log(this.state.password===this.state.retypepassword)
             alert('請確認密碼是否輸入正確')
         }
         e.preventDefault()
