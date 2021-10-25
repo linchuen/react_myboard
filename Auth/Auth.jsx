@@ -7,7 +7,7 @@ class Auth extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAuthorized: true,
+            isAuthorized: false,
             username: 'Admin',
             role: 'USER',
             authpage: 'FileController'
@@ -47,6 +47,8 @@ class Auth extends Component {
             }
             else if(this.state.authpage=='AdminPage' && this.state.role=='ADMIN'){
                 return <AdminPage username={this.state.username} />
+            }else{
+                return <Error403 />
             }
         } else {
             return <Error403 />
