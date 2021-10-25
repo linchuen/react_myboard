@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import Error403 from './Error403';
-import FileController from './FileController';
+import FileController from '../manage/FileController';
+import AdminPage from '../admin/AdminPage';
 
 class Auth extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isAuthorized: true,
-            username: 'Admin'
+            username: 'Admin',
+            role: 'USER',
+            authpage: 'FileController'
         }
     }
 
@@ -20,7 +23,7 @@ class Auth extends Component {
             .then(res => res.json())
             .then((data) => {
                 if (data['username']) {
-                    this.setState({ isAuthorized: true, username: data['username'] })
+                    this.setState({ isAuthorized: true, username: data['username'],role: data['role'] })
                 } else {
                     this.setState({ isAuthorized: false });
                 }
@@ -31,9 +34,20 @@ class Auth extends Component {
             })
     }
 
+    componentDidUpdate() {
+        if (this.props.authpage !== this.state.authpage) {
+          this.setState({ authpage: this.props.authpage })
+        }
+      }
+
     render() {
         if (this.state.isAuthorized) {
-            return <FileController username={this.state.username} />
+            if(this.state.authpage=='FileController'){
+                return <FileController username={this.state.username} />
+            }
+            else if(this.state.authpage=='AdminPage' && this.state.role=='ADMIN'){
+                return <AdminPage username={this.state.username} />
+            }
         } else {
             return <Error403 />
         }

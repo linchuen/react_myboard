@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import Auth from './manage/Auth';
+import Auth from './Auth/Auth';
 import Login from './login/Login';
 import Signup from './login/Signup';
 
@@ -21,7 +21,10 @@ ReactDOM.render(<Router>
       <Login />
     </Route>
     <Route path='/manage'>
-      <Auth />
+      <Auth authpage='FileController' />
+    </Route>
+    <Route path='/foradmin'>
+      <Auth authpage='AdminPage' />
     </Route>
 
     <Route path='/'>

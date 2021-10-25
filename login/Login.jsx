@@ -12,11 +12,15 @@ class Login extends Component {
         this.handleSignin = this.handleSignin.bind(this)
     }
     handleSignin(e) {
-        fetch('/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: this.state.username, password: this.state.password }) })
+        fetch('/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: this.state.username, password: this.state.password })
+        })
             .then((res) => { return res.json() })
             .then((data) => {
                 console.log(data['token'])
-                window.localStorage.setItem('token',data['token'])
+                window.localStorage.setItem('token', data['token'])
                 window.location.replace('/')
             })
             .catch((error) => { alert(error); console.log(error) })
