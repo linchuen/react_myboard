@@ -7,7 +7,7 @@ class Auth extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAuthorized: false,
+            isAuthorized: true,
             username: 'Admin',
             role: 'USER',
             authpage: 'FileController'
